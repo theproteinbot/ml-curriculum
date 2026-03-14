@@ -932,6 +932,117 @@ strong { color: #fff; font-weight: 600; }
   color: var(--text-muted);
 }
 
+/* ===== SYNC CARD ===== */
+.sync-card {
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  overflow: hidden;
+  margin-bottom: 24px;
+}
+.sync-card-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 14px 20px;
+  background: var(--bg-card);
+  border-bottom: 1px solid var(--border);
+}
+.sync-card-header h3 {
+  font-size: 14px;
+  font-weight: 700;
+  color: #fff;
+  flex: 1;
+}
+.sync-icon { font-size: 18px; }
+.sync-status {
+  font-size: 12px;
+  font-weight: 600;
+  padding: 3px 10px;
+  border-radius: 12px;
+}
+.sync-status.synced {
+  color: var(--green);
+  background: var(--green-dim);
+}
+.sync-status.syncing {
+  color: var(--yellow);
+  background: rgba(251, 191, 36, 0.12);
+}
+.sync-status.error {
+  color: var(--red);
+  background: rgba(248, 113, 113, 0.12);
+}
+.sync-panel {
+  padding: 20px;
+}
+.sync-desc {
+  font-size: 14px;
+  color: var(--text-dim);
+  margin-bottom: 16px;
+}
+.sync-steps {
+  padding-left: 20px;
+  margin-bottom: 20px;
+}
+.sync-steps li {
+  font-size: 13px;
+  color: var(--text-dim);
+  line-height: 1.7;
+  margin-bottom: 4px;
+}
+.sync-steps a {
+  font-weight: 600;
+}
+.sync-input-row {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 12px;
+}
+.sync-input {
+  flex: 1;
+  padding: 10px 14px;
+  background: var(--bg-input);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  color: var(--text);
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 13px;
+  outline: none;
+  transition: border-color var(--transition);
+}
+.sync-input:focus {
+  border-color: var(--accent);
+}
+.sync-input::placeholder {
+  color: var(--text-muted);
+}
+.sync-privacy {
+  font-size: 11px;
+  color: var(--text-muted);
+  line-height: 1.5;
+}
+.sync-connected-info {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+  color: var(--text-dim);
+  margin-bottom: 16px;
+}
+.sync-connected-dot {
+  width: 8px;
+  height: 8px;
+  background: var(--green);
+  border-radius: 50%;
+  box-shadow: 0 0 6px var(--green);
+}
+.sync-btn-row {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 12px;
+  flex-wrap: wrap;
+}
+
 /* Scrollbar */
 ::-webkit-scrollbar {
   width: 6px;

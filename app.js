@@ -1,17 +1,325 @@
 // ===== STATE =====
 const STORAGE_KEY = 'ml-curriculum-progress';
 const NOTES_KEY = 'ml-curriculum-notes';
+const SYNC_KEY = 'ml-curriculum-sync';
+const GIST_FILENAME = 'ml-curriculum-data.json';
 
 function loadProgress() {
-  try {
-    return JSON.parse(localStorage.getItem(STORAGE_KEY)) || {};
-  } catch {
-    return {};
+  try { return JSON.parse(localStorage.getItem(STORAGE_KEY)) || {}; }
+  catch { return {}; }
+}
+function saveProgress(data) {
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+}
+function loadNotes() {
+  try { return JSON.parse(localStorage.getItem(NOTES_KEY)) || {}; }
+  catch { return {}; }
+}
+function saveNotes(data) {
+  localStorage.setItem(NOTES_KEY, JSON.stringify(data));
+}
+function loadSyncConfig() {
+  try { return JSON.parse(localStorage.getItem(SYNC_KEY)) || {}; }
+  catch { return {}; }
+}
+function saveSyncConfig(data) {
+  localStorage.setItem(SYNC_KEY, JSON.stringify(data));
+}
+
+// ===== GIST SYNC =====
+const Sync = {
+  _syncing: false,
+  _debounceTimer: null,
+
+  isConfigured() {
+    const cfg = loadSyncConfig();
+    return !!(cfg.token && cfg.gistId);
+  },
+
+  async setup(token) {
+    // Validate the token by fetching user info
+    const res = await fetch('https://api.github.com/user', {
+      headers: { 'Authorization': `token ${token}`, 'Accept': 'application/vnd.github+json' }
+    });
+    if (!res.ok) throw new Error('Invalid token');
+    const user = await res.json();
+
+    // Check if a gist already exists
+    let gistId = null;
+    const gistsRes = await fetch('https://api.github.com/gists?per_page=100', {
+      headers: { 'Authorization': `token ${token}`, 'Accept': 'application/vnd.github+json' }
+    });
+    if (gistsRes.ok) {
+      const gists = await gistsRes.json();
+      const existing = gists.find(g => g.files && g.files[GIST_FILENAME]);
+      if (existing) gistId = existing.id;
+    }
+
+    // Create a new gist if none found
+    if (!gistId) {
+      const data = {
+        description: 'ML Curriculum - Notes & Progress Sync',
+        public: false,
+        files: {
+          [GIST_FILENAME]: {
+            content: JSON.stringify({
+              version: 1,
+              lastSync: new Date().toISOString(),
+              progress: loadProgress(),
+              notes: loadNotes()
+            }, null, 2)
+          }
+        }
+      };
+      const createRes = await fetch('https://api.github.com/gists', {
+        method: 'POST',
+        headers: {
+          'Authorization': `token ${token}`,
+          'Accept': 'application/vnd.github+json',
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(data)
+      });
+      if (!createRes.ok) throw new Error('Failed to create gist');
+      const gist = await createRes.json();
+      gistId = gist.id;
+    }
+
+    saveSyncConfig({ token, gistId, user: user.login });
+    return { user: user.login, gistId, isNew: !gistId };
+  },
+
+  async push() {
+    const cfg = loadSyncConfig();
+    if (!cfg.token || !cfg.gistId) return;
+
+    const data = {
+      version: 1,
+      lastSync: new Date().toISOString(),
+      progress: loadProgress(),
+      notes: loadNotes()
+    };
+
+    const res = await fetch(`https://api.github.com/gists/${cfg.gistId}`, {
+      method: 'PATCH',
+      headers: {
+        'Authorization': `token ${cfg.token}`,
+        'Accept': 'application/vnd.github+json',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        files: { [GIST_FILENAME]: { content: JSON.stringify(data, null, 2) } }
+      })
+    });
+    if (!res.ok) throw new Error('Failed to push to gist');
+    return data.lastSync;
+  },
+
+  async pull() {
+    const cfg = loadSyncConfig();
+    if (!cfg.token || !cfg.gistId) return null;
+
+    const res = await fetch(`https://api.github.com/gists/${cfg.gistId}`, {
+      headers: { 'Authorization': `token ${cfg.token}`, 'Accept': 'application/vnd.github+json' }
+    });
+    if (!res.ok) throw new Error('Failed to fetch gist');
+    const gist = await res.json();
+    const file = gist.files[GIST_FILENAME];
+    if (!file) throw new Error('Sync file not found in gist');
+
+    const data = JSON.parse(file.content);
+
+    // Merge progress (remote wins)
+    if (data.progress) {
+      const local = loadProgress();
+      saveProgress({ ...local, ...data.progress });
+    }
+
+    // Merge notes (keep longer version)
+    if (data.notes) {
+      const local = loadNotes();
+      const merged = { ...local };
+      for (const [key, val] of Object.entries(data.notes)) {
+        if (!merged[key] || val.length > merged[key].length) {
+          merged[key] = val;
+        }
+      }
+      saveNotes(merged);
+    }
+
+    return data.lastSync;
+  },
+
+  // Debounced auto-push: waits 3s after last change before syncing
+  schedulePush() {
+    if (!this.isConfigured()) return;
+    clearTimeout(this._debounceTimer);
+    this._debounceTimer = setTimeout(() => {
+      this.push().then(() => {
+        updateSyncStatus('Synced');
+      }).catch(() => {
+        updateSyncStatus('Sync failed');
+      });
+    }, 3000);
+  },
+
+  disconnect() {
+    localStorage.removeItem(SYNC_KEY);
+  }
+};
+
+function updateSyncStatus(text) {
+  const el = document.getElementById('syncStatus');
+  if (el) {
+    el.textContent = text;
+    if (text === 'Synced') {
+      el.className = 'sync-status synced';
+    } else if (text.includes('fail')) {
+      el.className = 'sync-status error';
+    } else {
+      el.className = 'sync-status syncing';
+    }
+    // Reset after a few seconds
+    if (text === 'Synced' || text.includes('fail')) {
+      setTimeout(() => {
+        if (el.textContent === text) {
+          el.textContent = Sync.isConfigured() ? 'Auto-sync on' : '';
+          el.className = 'sync-status';
+        }
+      }, 3000);
+    }
+  }
+  // Also update notes meta labels
+  document.querySelectorAll('.notes-meta').forEach(m => {
+    if (text === 'Synced') {
+      m.textContent = 'Synced to Gist';
+      setTimeout(() => { m.textContent = Sync.isConfigured() ? 'Auto-synced' : 'Auto-saved locally'; }, 2000);
+    }
+  });
+}
+
+function initSync() {
+  const cfg = loadSyncConfig();
+  const setupPanel = document.getElementById('syncSetup');
+  const connectedPanel = document.getElementById('syncConnected');
+  const tokenInput = document.getElementById('syncToken');
+  const connectBtn = document.getElementById('syncConnectBtn');
+  const disconnectBtn = document.getElementById('syncDisconnectBtn');
+  const pullBtn = document.getElementById('syncPullBtn');
+  const pushBtn = document.getElementById('syncPushBtn');
+  const syncUser = document.getElementById('syncUser');
+
+  if (!setupPanel) return;
+
+  function showState() {
+    if (Sync.isConfigured()) {
+      const c = loadSyncConfig();
+      setupPanel.style.display = 'none';
+      connectedPanel.style.display = 'block';
+      if (syncUser) syncUser.textContent = c.user || 'connected';
+      // Update all notes-meta labels
+      document.querySelectorAll('.notes-meta').forEach(m => { m.textContent = 'Auto-synced'; });
+    } else {
+      setupPanel.style.display = 'block';
+      connectedPanel.style.display = 'none';
+      document.querySelectorAll('.notes-meta').forEach(m => { m.textContent = 'Auto-saved locally'; });
+    }
+  }
+
+  showState();
+
+  // Connect
+  if (connectBtn) {
+    connectBtn.addEventListener('click', async () => {
+      const token = tokenInput.value.trim();
+      if (!token) return;
+      connectBtn.disabled = true;
+      connectBtn.textContent = 'Connecting...';
+      try {
+        const result = await Sync.setup(token);
+        tokenInput.value = '';
+        showState();
+        // Pull remote data to merge
+        await Sync.pull();
+        reloadUI();
+        // Then push merged state
+        await Sync.push();
+        updateSyncStatus('Synced');
+      } catch (err) {
+        alert('Failed to connect: ' + err.message);
+      }
+      connectBtn.disabled = false;
+      connectBtn.textContent = 'Connect';
+    });
+  }
+
+  // Disconnect
+  if (disconnectBtn) {
+    disconnectBtn.addEventListener('click', () => {
+      if (confirm('Disconnect sync? Your notes stay on this device but will no longer sync.')) {
+        Sync.disconnect();
+        showState();
+        updateSyncStatus('');
+      }
+    });
+  }
+
+  // Manual pull
+  if (pullBtn) {
+    pullBtn.addEventListener('click', async () => {
+      pullBtn.disabled = true;
+      updateSyncStatus('Pulling...');
+      try {
+        await Sync.pull();
+        reloadUI();
+        updateSyncStatus('Synced');
+      } catch (err) {
+        updateSyncStatus('Pull failed');
+      }
+      pullBtn.disabled = false;
+    });
+  }
+
+  // Manual push
+  if (pushBtn) {
+    pushBtn.addEventListener('click', async () => {
+      pushBtn.disabled = true;
+      updateSyncStatus('Pushing...');
+      try {
+        await Sync.push();
+        updateSyncStatus('Synced');
+      } catch (err) {
+        updateSyncStatus('Push failed');
+      }
+      pushBtn.disabled = false;
+    });
+  }
+
+  // Auto-pull on page load if configured
+  if (Sync.isConfigured()) {
+    Sync.pull().then(() => {
+      reloadUI();
+      updateSyncStatus('Synced');
+    }).catch(() => {
+      updateSyncStatus('Offline');
+    });
   }
 }
 
-function saveProgress(data) {
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+// Reload all UI from localStorage
+function reloadUI() {
+  const progress = loadProgress();
+  document.querySelectorAll('.item-check').forEach(cb => {
+    const item = cb.closest('[data-id]');
+    if (!item) return;
+    cb.checked = !!progress[item.dataset.id];
+  });
+  const notes = loadNotes();
+  document.querySelectorAll('.notes-textarea').forEach(ta => {
+    const key = ta.dataset.note;
+    if (key) ta.value = notes[key] || '';
+  });
+  updateProgress();
 }
 
 // ===== CHECKBOX PERSISTENCE =====
@@ -24,12 +332,8 @@ function initCheckboxes() {
     if (!item) return;
     const id = item.dataset.id;
 
-    // Restore state
-    if (progress[id]) {
-      cb.checked = true;
-    }
+    if (progress[id]) cb.checked = true;
 
-    // Listen for changes
     cb.addEventListener('change', () => {
       const prog = loadProgress();
       if (cb.checked) {
@@ -39,6 +343,7 @@ function initCheckboxes() {
       }
       saveProgress(prog);
       updateProgress();
+      Sync.schedulePush();
     });
   });
 }
@@ -65,7 +370,6 @@ function initNav() {
   const links = document.querySelectorAll('.nav-link');
   const sections = document.querySelectorAll('.section');
 
-  // Click handler
   links.forEach(link => {
     link.addEventListener('click', (e) => {
       e.preventDefault();
@@ -75,7 +379,6 @@ function initNav() {
     });
   });
 
-  // Scroll spy
   const observer = new IntersectionObserver(entries => {
     entries.forEach(entry => {
       if (entry.isIntersecting) {
@@ -100,8 +403,6 @@ function scrollToSection(id) {
   const top = el.getBoundingClientRect().top + window.pageYOffset - offset;
   window.scrollTo({ top, behavior: 'smooth' });
 }
-
-// Make scrollToSection global for onclick handlers
 window.scrollToSection = scrollToSection;
 
 // ===== MOBILE MENU =====
@@ -116,7 +417,6 @@ function initMobileMenu() {
       overlay.classList.toggle('open');
     });
   }
-
   if (overlay) {
     overlay.addEventListener('click', closeMobileMenu);
   }
@@ -148,6 +448,7 @@ function initReset() {
       document.querySelectorAll('.item-check').forEach(cb => cb.checked = false);
       document.querySelectorAll('.notes-textarea').forEach(ta => ta.value = '');
       updateProgress();
+      Sync.schedulePush();
     }
   });
 }
@@ -155,26 +456,11 @@ function initReset() {
 // ===== KEYBOARD SHORTCUTS =====
 function initKeyboard() {
   document.addEventListener('keydown', (e) => {
-    // Escape to close mobile menu
-    if (e.key === 'Escape') {
-      closeMobileMenu();
-    }
+    if (e.key === 'Escape') closeMobileMenu();
   });
 }
 
 // ===== NOTES =====
-function loadNotes() {
-  try {
-    return JSON.parse(localStorage.getItem(NOTES_KEY)) || {};
-  } catch {
-    return {};
-  }
-}
-
-function saveNotes(data) {
-  localStorage.setItem(NOTES_KEY, JSON.stringify(data));
-}
-
 function initNotes() {
   const notes = loadNotes();
   const textareas = document.querySelectorAll('.notes-textarea');
@@ -183,15 +469,12 @@ function initNotes() {
     const key = ta.dataset.note;
     if (!key) return;
 
-    // Restore saved content
     if (notes[key]) ta.value = notes[key];
 
-    // Auto-open notes sections that have content
     if (notes[key] && ta.closest('.notes-section')) {
       ta.closest('.notes-section').classList.add('open');
     }
 
-    // Debounced auto-save
     let saveTimeout;
     ta.addEventListener('input', () => {
       clearTimeout(saveTimeout);
@@ -203,12 +486,14 @@ function initNotes() {
           delete n[key];
         }
         saveNotes(n);
-        // Update meta text
         const meta = ta.parentElement.querySelector('.notes-meta');
         if (meta) {
           meta.textContent = 'Saved';
-          setTimeout(() => { meta.textContent = 'Auto-saved locally'; }, 1500);
+          setTimeout(() => {
+            meta.textContent = Sync.isConfigured() ? 'Auto-synced' : 'Auto-saved locally';
+          }, 1500);
         }
+        Sync.schedulePush();
       }, 500);
     });
   });
@@ -218,7 +503,6 @@ function toggleNotes(el) {
   const section = el.closest('.notes-section');
   if (section) {
     section.classList.toggle('open');
-    // Focus textarea when opening
     if (section.classList.contains('open')) {
       const ta = section.querySelector('.notes-textarea');
       if (ta) setTimeout(() => ta.focus(), 300);
@@ -254,23 +538,15 @@ function initExportImport() {
     importFile.addEventListener('change', (e) => {
       const file = e.target.files[0];
       if (!file) return;
-
       const reader = new FileReader();
       reader.onload = (ev) => {
         try {
           const data = JSON.parse(ev.target.result);
-
           if (data.progress) {
-            // Merge progress (imported wins on conflict)
-            const current = loadProgress();
-            const merged = { ...current, ...data.progress };
-            saveProgress(merged);
+            saveProgress({ ...loadProgress(), ...data.progress });
           }
-
           if (data.notes) {
-            // Merge notes: keep longer version on conflict
-            const current = loadNotes();
-            const merged = { ...current };
+            const merged = { ...loadNotes() };
             for (const [key, val] of Object.entries(data.notes)) {
               if (!merged[key] || val.length > merged[key].length) {
                 merged[key] = val;
@@ -278,21 +554,11 @@ function initExportImport() {
             }
             saveNotes(merged);
           }
-
-          // Reload UI
-          document.querySelectorAll('.item-check').forEach(cb => {
-            const item = cb.closest('[data-id]');
-            if (!item) return;
-            cb.checked = !!loadProgress()[item.dataset.id];
-          });
-          document.querySelectorAll('.notes-textarea').forEach(ta => {
-            const key = ta.dataset.note;
-            if (key) ta.value = loadNotes()[key] || '';
-          });
-          updateProgress();
+          reloadUI();
+          Sync.schedulePush();
           alert('Notes and progress imported successfully!');
-        } catch (err) {
-          alert('Invalid file format. Please use a JSON file exported from this app.');
+        } catch {
+          alert('Invalid file format.');
         }
         importFile.value = '';
       };
@@ -311,8 +577,8 @@ document.addEventListener('DOMContentLoaded', () => {
   initKeyboard();
   initNotes();
   initExportImport();
+  initSync();
 
-  // Open collapsible sections that have checked items
   document.querySelectorAll('.collapsible').forEach(group => {
     const hasChecked = group.querySelector('.item-check:checked');
     if (hasChecked) group.classList.add('open');

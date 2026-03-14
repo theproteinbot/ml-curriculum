@@ -1248,16 +1248,63 @@ Suggested structure:
       <div class="notes-meta">Auto-saved locally</div>
     </div>
 
+    <!-- Gist Sync -->
+    <div class="sync-card">
+      <div class="sync-card-header">
+        <span class="sync-icon">&#9741;</span>
+        <h3>Sync Across Devices</h3>
+        <span class="sync-status" id="syncStatus"></span>
+      </div>
+
+      <!-- Setup state -->
+      <div id="syncSetup" class="sync-panel">
+        <p class="sync-desc">Sync your notes and progress across all devices using a private GitHub Gist.</p>
+        <ol class="sync-steps">
+          <li>Go to <a href="https://github.com/settings/tokens?type=beta" target="_blank" rel="noopener">GitHub &rarr; Settings &rarr; Tokens (fine-grained)</a></li>
+          <li>Click <strong>"Generate new token"</strong></li>
+          <li>Name it <code>ml-curriculum-sync</code>, set expiry to 90 days</li>
+          <li>Under <strong>Account permissions</strong>, set <strong>Gists</strong> to <strong>Read and write</strong></li>
+          <li>Generate &amp; paste the token below</li>
+        </ol>
+        <div class="sync-input-row">
+          <input type="password" id="syncToken" class="sync-input" placeholder="github_pat_...">
+          <button class="action-btn export-btn" id="syncConnectBtn">Connect</button>
+        </div>
+        <p class="sync-privacy">Your token is stored only in this browser's localStorage. It never leaves your device except to call the GitHub API directly.</p>
+      </div>
+
+      <!-- Connected state -->
+      <div id="syncConnected" class="sync-panel" style="display:none">
+        <div class="sync-connected-info">
+          <span class="sync-connected-dot"></span>
+          Connected as <strong id="syncUser"></strong>
+        </div>
+        <div class="sync-btn-row">
+          <button class="action-btn export-btn" id="syncPullBtn">
+            <span>&#8615;</span> Pull
+          </button>
+          <button class="action-btn export-btn" id="syncPushBtn">
+            <span>&#8613;</span> Push
+          </button>
+          <button class="action-btn import-btn" id="syncDisconnectBtn">
+            Disconnect
+          </button>
+        </div>
+        <p class="sync-privacy">Auto-syncs 3 seconds after each change. Use Pull/Push for manual sync.</p>
+      </div>
+    </div>
+
+    <!-- Manual export/import fallback -->
     <div class="notebook-actions">
       <button class="action-btn export-btn" id="exportBtn">
-        <span>&#8615;</span> Export All Notes
+        <span>&#8615;</span> Export JSON
       </button>
       <label class="action-btn import-btn">
-        <span>&#8613;</span> Import Notes
+        <span>&#8613;</span> Import JSON
         <input type="file" id="importFile" accept=".json" hidden>
       </label>
     </div>
-    <p class="sync-hint">Export your notes as JSON, then import on another device to sync.</p>
+    <p class="sync-hint">Manual export/import also available as backup.</p>
   </section>
 
   <!-- QUICK REFERENCE -->
