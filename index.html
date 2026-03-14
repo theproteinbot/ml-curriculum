@@ -1,0 +1,1377 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>12-Week ML Theory Curriculum</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<!-- Mobile header -->
+<header class="mobile-header" id="mobileHeader">
+  <button class="menu-btn" id="menuBtn" aria-label="Toggle menu">
+    <span></span><span></span><span></span>
+  </button>
+  <h1>ML Theory</h1>
+  <div class="progress-mini" id="progressMini">0%</div>
+</header>
+
+<!-- Sidebar -->
+<nav class="sidebar" id="sidebar">
+  <div class="sidebar-header">
+    <div class="logo">
+      <div class="logo-icon">ML</div>
+      <div>
+        <h1>ML Theory</h1>
+        <p class="subtitle">12-Week Curriculum</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="progress-bar-container">
+    <div class="progress-label">
+      <span>Progress</span>
+      <span id="progressPercent">0%</span>
+    </div>
+    <div class="progress-bar">
+      <div class="progress-fill" id="progressFill"></div>
+    </div>
+    <div class="progress-stats" id="progressStats">0 / 0 items</div>
+  </div>
+
+  <ul class="nav-list" id="navList">
+    <li class="nav-item">
+      <a href="#overview" class="nav-link active" data-section="overview">
+        <span class="nav-icon">&#9670;</span> Overview
+      </a>
+    </li>
+    <li class="nav-item">
+      <a href="#how-to-use" class="nav-link" data-section="how-to-use">
+        <span class="nav-icon">&#9881;</span> How to Use
+      </a>
+    </li>
+    <li class="nav-divider">Phase 1</li>
+    <li class="nav-item">
+      <a href="#phase-1" class="nav-link" data-section="phase-1">
+        <span class="nav-icon">1</span> Transformers
+        <span class="nav-weeks">Wk 1-2</span>
+      </a>
+    </li>
+    <li class="nav-divider">Phase 2</li>
+    <li class="nav-item">
+      <a href="#phase-2" class="nav-link" data-section="phase-2">
+        <span class="nav-icon">2</span> Equivariant Networks
+        <span class="nav-weeks">Wk 3-5</span>
+      </a>
+    </li>
+    <li class="nav-divider">Phase 3</li>
+    <li class="nav-item">
+      <a href="#phase-3" class="nav-link" data-section="phase-3">
+        <span class="nav-icon">3</span> Diffusion & Flow
+        <span class="nav-weeks">Wk 6-8</span>
+      </a>
+    </li>
+    <li class="nav-divider">Phase 4</li>
+    <li class="nav-item">
+      <a href="#phase-4" class="nav-link" data-section="phase-4">
+        <span class="nav-icon">4</span> Representations
+        <span class="nav-weeks">Wk 9-10</span>
+      </a>
+    </li>
+    <li class="nav-divider">Phase 5</li>
+    <li class="nav-item">
+      <a href="#phase-5" class="nav-link" data-section="phase-5">
+        <span class="nav-icon">5</span> RL & Bayesian Opt
+        <span class="nav-weeks">Wk 11</span>
+      </a>
+    </li>
+    <li class="nav-divider">Phase 6</li>
+    <li class="nav-item">
+      <a href="#phase-6" class="nav-link" data-section="phase-6">
+        <span class="nav-icon">6</span> Writing Papers
+        <span class="nav-weeks">Wk 12</span>
+      </a>
+    </li>
+    <li class="nav-divider">Reference</li>
+    <li class="nav-item">
+      <a href="#quick-ref" class="nav-link" data-section="quick-ref">
+        <span class="nav-icon">&#9634;</span> Quick Reference
+      </a>
+    </li>
+    <li class="nav-item">
+      <a href="#appendix" class="nav-link" data-section="appendix">
+        <span class="nav-icon">&#931;</span> Math Refreshers
+      </a>
+    </li>
+  </ul>
+
+  <div class="sidebar-footer">
+    <button class="reset-btn" id="resetBtn">Reset Progress</button>
+  </div>
+</nav>
+
+<!-- Overlay for mobile -->
+<div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+<!-- Main content -->
+<main class="main" id="main">
+
+  <!-- OVERVIEW -->
+  <section id="overview" class="section">
+    <div class="section-hero">
+      <div class="hero-badge">12 Weeks &middot; ~104 Hours</div>
+      <h1 class="hero-title">ML Theory Curriculum</h1>
+      <p class="hero-subtitle">Go from <strong>"power user of protein ML tools"</strong> to <strong>"architect who designs novel methods."</strong></p>
+      <div class="hero-stats">
+        <div class="stat">
+          <div class="stat-value">6</div>
+          <div class="stat-label">Phases</div>
+        </div>
+        <div class="stat">
+          <div class="stat-value">~8</div>
+          <div class="stat-label">Hrs/Week</div>
+        </div>
+        <div class="stat">
+          <div class="stat-value">30+</div>
+          <div class="stat-label">Papers</div>
+        </div>
+        <div class="stat">
+          <div class="stat-value">6</div>
+          <div class="stat-label">Artifacts</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="phase-timeline">
+      <div class="timeline-item" onclick="scrollToSection('phase-1')">
+        <div class="timeline-marker">1</div>
+        <div class="timeline-content">
+          <h3>Transformers</h3>
+          <p>Weeks 1-2</p>
+        </div>
+      </div>
+      <div class="timeline-item" onclick="scrollToSection('phase-2')">
+        <div class="timeline-marker">2</div>
+        <div class="timeline-content">
+          <h3>Equivariant Networks</h3>
+          <p>Weeks 3-5</p>
+        </div>
+      </div>
+      <div class="timeline-item" onclick="scrollToSection('phase-3')">
+        <div class="timeline-marker">3</div>
+        <div class="timeline-content">
+          <h3>Diffusion & Flow Matching</h3>
+          <p>Weeks 6-8</p>
+        </div>
+      </div>
+      <div class="timeline-item" onclick="scrollToSection('phase-4')">
+        <div class="timeline-marker">4</div>
+        <div class="timeline-content">
+          <h3>Representation Learning</h3>
+          <p>Weeks 9-10</p>
+        </div>
+      </div>
+      <div class="timeline-item" onclick="scrollToSection('phase-5')">
+        <div class="timeline-marker">5</div>
+        <div class="timeline-content">
+          <h3>RL & Bayesian Optimization</h3>
+          <p>Week 11</p>
+        </div>
+      </div>
+      <div class="timeline-item" onclick="scrollToSection('phase-6')">
+        <div class="timeline-marker">6</div>
+        <div class="timeline-content">
+          <h3>Writing Methods Papers</h3>
+          <p>Week 12</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- HOW TO USE -->
+  <section id="how-to-use" class="section">
+    <div class="section-header">
+      <span class="section-badge">Getting Started</span>
+      <h2>How to Use This Curriculum</h2>
+    </div>
+
+    <div class="info-cards">
+      <div class="info-card">
+        <div class="info-card-icon">&#128221;</div>
+        <h3>Research Notebook</h3>
+        <p>Start a single document (<code>ml_theory_notes.md</code>) on day 1. Every week record: derivations you worked through, diagrams you drew, insights, and &mdash; most importantly &mdash; <strong>research questions</strong> that occur to you. After 12 weeks this becomes the seed for a methods paper.</p>
+      </div>
+      <div class="info-card">
+        <div class="info-card-icon">&#128196;</div>
+        <h3>Weekly Artifact</h3>
+        <p>Each phase lists a short writing deliverable (1-pager, derivation, technical note). <strong>Do these.</strong> Writing forces real understanding in a way that reading and coding alone don't.</p>
+      </div>
+      <div class="info-card">
+        <div class="info-card-icon">&#128161;</div>
+        <h3>Paper Ideation</h3>
+        <p>Paper ideation starts <strong>week 6</strong>, not week 12. By the time you've covered transformers, equivariance, and diffusion, you'll have enough vocabulary to start sketching ideas. Capture them in your notebook immediately.</p>
+      </div>
+      <div class="info-card">
+        <div class="info-card-icon">&#931;</div>
+        <h3>Math Refreshers</h3>
+        <p>Consult the <a href="#appendix" onclick="scrollToSection('appendix')">appendix</a> as needed &mdash; don't read them front-to-back.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- PHASE 1: TRANSFORMERS -->
+  <section id="phase-1" class="section">
+    <div class="section-header">
+      <span class="section-badge phase-badge">Phase 1 &middot; Weeks 1-2</span>
+      <h2>Transformers</h2>
+      <p class="section-why"><strong>Why:</strong> You use ESM-2 daily but can't explain why &radic;d<sub>k</sub> scaling matters or how RoPE works.</p>
+    </div>
+
+    <!-- Blog Posts -->
+    <div class="resource-group">
+      <h3 class="resource-group-title">
+        <span class="resource-icon blog-icon">B</span>
+        Blog Posts <span class="resource-hint">(start here)</span>
+      </h3>
+      <div class="resource-list">
+        <label class="resource-item" data-id="p1-blog-1">
+          <input type="checkbox" class="item-check">
+          <div class="resource-content">
+            <a href="https://jalammar.github.io/illustrated-transformer/" target="_blank" rel="noopener">The Illustrated Transformer</a>
+            <span class="resource-meta">Jay Alammar &middot; Visual walkthrough. The gold standard intro.</span>
+          </div>
+        </label>
+        <label class="resource-item" data-id="p1-blog-2">
+          <input type="checkbox" class="item-check">
+          <div class="resource-content">
+            <a href="https://poloclub.github.io/transformer-explainer/" target="_blank" rel="noopener">Transformer Explainer</a>
+            <span class="resource-meta">Georgia Tech &middot; Interactive tool: input text, watch Q/K/V, attention weights, and output probabilities compute live in browser.</span>
+          </div>
+        </label>
+        <label class="resource-item" data-id="p1-blog-3">
+          <input type="checkbox" class="item-check">
+          <div class="resource-content">
+            <a href="https://www.3blue1brown.com/lessons/attention" target="_blank" rel="noopener">3Blue1Brown: Attention step-by-step</a>
+            <span class="resource-meta">Animated video with full matrix derivations. Best visual explanation of <em>why</em> multi-head attention learns diverse subspaces.</span>
+          </div>
+        </label>
+        <label class="resource-item" data-id="p1-blog-4">
+          <input type="checkbox" class="item-check">
+          <div class="resource-content">
+            <a href="https://transformer-circuits.pub/2021/framework/index.html" target="_blank" rel="noopener">Transformer Circuits</a>
+            <span class="resource-meta">Anthropic &middot; Residual stream / QK-OV circuit decomposition. Read Sections 1-3.</span>
+          </div>
+        </label>
+      </div>
+    </div>
+
+    <!-- Papers -->
+    <div class="resource-group">
+      <h3 class="resource-group-title">
+        <span class="resource-icon paper-icon">P</span>
+        Papers
+      </h3>
+      <div class="resource-list">
+        <label class="resource-item" data-id="p1-paper-1">
+          <input type="checkbox" class="item-check">
+          <div class="resource-content">
+            <strong>Vaswani et al., "Attention Is All You Need" (2017)</strong>
+            <span class="resource-meta">Reread focusing on variance analysis for &radic;d<sub>k</sub></span>
+          </div>
+        </label>
+        <label class="resource-item" data-id="p1-paper-2">
+          <input type="checkbox" class="item-check">
+          <div class="resource-content">
+            <strong>Phuong & Hutter, "Formal Algorithms for Transformers"</strong>
+            <span class="resource-meta">arXiv 2207.09238 &middot; Complete pseudocode in ~50 lines</span>
+          </div>
+        </label>
+      </div>
+    </div>
+
+    <!-- Optional: Scaling Laws -->
+    <div class="resource-group collapsible">
+      <h3 class="resource-group-title collapsible-toggle" onclick="toggleCollapsible(this)">
+        <span class="resource-icon optional-icon">?</span>
+        Optional: Scaling Laws Context
+        <span class="collapse-arrow">&#9662;</span>
+      </h3>
+      <div class="resource-list collapsible-content">
+        <label class="resource-item" data-id="p1-opt-1">
+          <input type="checkbox" class="item-check">
+          <div class="resource-content">
+            <strong>Kaplan et al., "Scaling Laws for Neural Language Models" (2020)</strong>
+            <span class="resource-meta">Why bigger models win</span>
+          </div>
+        </label>
+        <label class="resource-item" data-id="p1-opt-2">
+          <input type="checkbox" class="item-check">
+          <div class="resource-content">
+            <strong>Hoffmann et al., "Chinchilla" (2022)</strong>
+            <span class="resource-meta">Compute-optimal training. Explains why ESM-2 650M beats ESM-1b, why UniRef size matters.</span>
+          </div>
+        </label>
+      </div>
+    </div>
+
+    <!-- Coding -->
+    <div class="resource-group">
+      <h3 class="resource-group-title">
+        <span class="resource-icon code-icon">&lt;/&gt;</span>
+        Coding
+      </h3>
+      <div class="resource-list">
+        <label class="resource-item" data-id="p1-code-1">
+          <input type="checkbox" class="item-check">
+          <div class="resource-content">
+            <a href="https://nlp.seas.harvard.edu/annotated-transformer/" target="_blank" rel="noopener">The Annotated Transformer</a>
+            <span class="resource-meta">Line-by-line PyTorch implementation</span>
+          </div>
+        </label>
+        <label class="resource-item" data-id="p1-code-2">
+          <input type="checkbox" class="item-check">
+          <div class="resource-content">
+            <a href="https://github.com/karpathy/build-nanogpt" target="_blank" rel="noopener">Karpathy's build-nanogpt</a>
+            <span class="resource-meta">Build GPT from scratch, one commit per concept</span>
+          </div>
+        </label>
+      </div>
+    </div>
+
+    <!-- Protein Exercises -->
+    <div class="resource-group">
+      <h3 class="resource-group-title">
+        <span class="resource-icon exercise-icon">&#9883;</span>
+        Protein Exercises
+      </h3>
+      <div class="resource-list">
+        <label class="resource-item exercise" data-id="p1-ex-1">
+          <input type="checkbox" class="item-check">
+          <div class="resource-content">
+            <strong>Extract and visualize ESM-2 attention maps</strong>
+            <span class="resource-meta">Load <code>esm2_t33_650M_UR50D</code>, run D-domain binder sequences through it, extract attention weights from all 33 layers. Visualize which residue pairs attend to each other. Compare D-domain sequences vs well-characterized natural proteins &mdash; do attention patterns differ for these unusual scaffolds? Use <a href="https://github.com/jessevig/bertviz" target="_blank">BertViz</a> adapted for ESM-2, or write your own visualization.</span>
+          </div>
+        </label>
+        <label class="resource-item exercise" data-id="p1-ex-2">
+          <input type="checkbox" class="item-check">
+          <div class="resource-content">
+            <strong>Implement masked language modeling loss from scratch</strong>
+            <span class="resource-meta">On a small protein sequence dataset (e.g., a CATH superfamily). Don't use HuggingFace Trainer &mdash; write the masking, the forward pass through ESM-2, and the cross-entropy loss yourself.</span>
+          </div>
+        </label>
+      </div>
+    </div>
+
+    <!-- Weekly Artifact -->
+    <div class="artifact-card">
+      <div class="artifact-header">
+        <span class="artifact-icon">&#9998;</span>
+        <h3>Weekly Artifact</h3>
+      </div>
+      <label class="artifact-body" data-id="p1-artifact">
+        <input type="checkbox" class="item-check">
+        <p>Write a <strong>1-page derivation</strong> of why &radic;d<sub>k</sub> scaling prevents softmax saturation. Include: what happens to attention entropy without it, and why this matters for long protein sequences in ESM-2.</p>
+      </label>
+    </div>
+  </section>
+
+  <!-- PHASE 2: EQUIVARIANT NETWORKS -->
+  <section id="phase-2" class="section">
+    <div class="section-header">
+      <span class="section-badge phase-badge">Phase 2 &middot; Weeks 3-5</span>
+      <h2>Equivariant Networks</h2>
+      <p class="section-why"><strong>Why:</strong> AF2's IPA, RFDiffusion, Boltz-2 all rely on SE(3) equivariance. You need this to design architectures that handle unusual scaffold topologies like D-domains.</p>
+    </div>
+
+    <!-- Blog Posts -->
+    <div class="resource-group">
+      <h3 class="resource-group-title">
+        <span class="resource-icon blog-icon">B</span>
+        Blog Posts <span class="resource-hint">(start here)</span>
+      </h3>
+      <div class="resource-list">
+        <label class="resource-item" data-id="p2-blog-1">
+          <input type="checkbox" class="item-check">
+          <div class="resource-content">
+            <a href="https://maurice-weiler.gitlab.io/blog_post/cnn-book_1_equivariant_networks/" target="_blank" rel="noopener">Maurice Weiler: "Equivariant NNs &mdash; what, why and how?"</a>
+            <span class="resource-meta">Beautiful commutative diagrams and weight-sharing visualizations. Three-part series.</span>
+          </div>
+        </label>
+        <label class="resource-item" data-id="p2-blog-2">
+          <input type="checkbox" class="item-check">
+          <div class="resource-content">
+            <a href="https://dmol.pub/dl/Equivariant.html" target="_blank" rel="noopener">dmol.pub Ch. 10: Equivariant Neural Networks</a>
+            <span class="resource-meta">Runnable Colab, covers group theory through working e3nn code. Most accessible practical intro.</span>
+          </div>
+        </label>
+        <label class="resource-item" data-id="p2-blog-3">
+          <input type="checkbox" class="item-check">
+          <div class="resource-content">
+            <a href="https://elanapearl.github.io/blog/2024/the-illustrated-alphafold/" target="_blank" rel="noopener">The Illustrated AlphaFold</a>
+            <span class="resource-meta">Visual walkthrough of AF3, explaining IPA and why they replaced it with data augmentation.</span>
+          </div>
+        </label>
+      </div>
+    </div>
+
+    <!-- Papers -->
+    <div class="resource-group">
+      <h3 class="resource-group-title">
+        <span class="resource-icon paper-icon">P</span>
+        Papers
+      </h3>
+      <div class="resource-list">
+        <label class="resource-item" data-id="p2-paper-1">
+          <input type="checkbox" class="item-check">
+          <div class="resource-content">
+            <strong>Satorras et al., "E(n) Equivariant Graph Neural Networks" (ICML 2021)</strong>
+            <span class="resource-meta">E(n) equivariance <em>without</em> spherical harmonics. Most accessible entry point.</span>
+          </div>
+        </label>
+        <label class="resource-item" data-id="p2-paper-2">
+          <input type="checkbox" class="item-check">
+          <div class="resource-content">
+            <strong>Fuchs et al., "SE(3)-Transformers" (NeurIPS 2020)</strong>
+            <span class="resource-meta">Equivariance + attention</span>
+          </div>
+        </label>
+        <label class="resource-item" data-id="p2-paper-3">
+          <input type="checkbox" class="item-check">
+          <div class="resource-content">
+            <strong>Jumper et al., "AlphaFold" (Nature 2021)</strong>
+            <span class="resource-meta">Reread Methods, specifically <strong>Invariant Point Attention</strong> (Fig 3d)</span>
+          </div>
+        </label>
+        <label class="resource-item" data-id="p2-paper-4">
+          <input type="checkbox" class="item-check">
+          <div class="resource-content">
+            <strong>Bronstein et al., "Geometric Deep Learning" (arXiv 2104.13478)</strong>
+            <span class="resource-meta">Ch 3-5: the unifying blueprint</span>
+          </div>
+        </label>
+      </div>
+    </div>
+
+    <!-- Coding -->
+    <div class="resource-group">
+      <h3 class="resource-group-title">
+        <span class="resource-icon code-icon">&lt;/&gt;</span>
+        Coding
+      </h3>
+      <div class="resource-list">
+        <label class="resource-item" data-id="p2-code-1">
+          <input type="checkbox" class="item-check">
+          <div class="resource-content">
+            <a href="https://projects.volkamerlab.org/teachopencadd/talktorials/T036_e3_equivariant_gnn.html" target="_blank" rel="noopener">TeachOpenCADD T036</a>
+            <span class="resource-meta">EGNN from scratch on QM9 molecules</span>
+          </div>
+        </label>
+        <label class="resource-item" data-id="p2-code-2">
+          <input type="checkbox" class="item-check">
+          <div class="resource-content">
+            <a href="https://docs.e3nn.org/en/stable/guide/change_of_basis.html" target="_blank" rel="noopener">e3nn tutorials</a>
+            <span class="resource-meta">CG products, radial functions</span>
+          </div>
+        </label>
+        <label class="resource-item" data-id="p2-code-3">
+          <input type="checkbox" class="item-check">
+          <div class="resource-content">
+            <a href="https://github.com/lucidrains/invariant-point-attention" target="_blank" rel="noopener">lucidrains/invariant-point-attention</a>
+            <span class="resource-meta">Standalone IPA implementation</span>
+          </div>
+        </label>
+      </div>
+    </div>
+
+    <!-- Protein Exercises -->
+    <div class="resource-group">
+      <h3 class="resource-group-title">
+        <span class="resource-icon exercise-icon">&#9883;</span>
+        Protein Exercises
+      </h3>
+      <div class="resource-list">
+        <label class="resource-item exercise" data-id="p2-ex-1">
+          <input type="checkbox" class="item-check">
+          <div class="resource-content">
+            <strong>Reimplement ProteinMPNN's message-passing encoder from scratch</strong>
+            <span class="resource-meta">Build the encoder yourself: compute RBF distance features from PDB coordinates, construct the k-nearest-neighbor graph, implement the message-passing update with edge feature updates. Compare your sequence recovery to the official model.</span>
+          </div>
+        </label>
+        <label class="resource-item exercise" data-id="p2-ex-2">
+          <input type="checkbox" class="item-check">
+          <div class="resource-content">
+            <strong>Dissect AlphaFold2's IPA module</strong>
+            <span class="resource-meta">Using <a href="https://github.com/aqlaboratory/openfold" target="_blank">OpenFold</a>. Read <code>openfold/model/structure_module.py</code>, trace how rigid-body frames are constructed per residue, and how Q/K/V points are projected into local frames. Modify one thing and measure the effect on predicted lDDT.</span>
+          </div>
+        </label>
+      </div>
+    </div>
+
+    <!-- Weekly Artifacts -->
+    <div class="artifact-card">
+      <div class="artifact-header">
+        <span class="artifact-icon">&#9998;</span>
+        <h3>Weekly Artifacts</h3>
+      </div>
+      <label class="artifact-body" data-id="p2-artifact-1">
+        <input type="checkbox" class="item-check">
+        <p><strong>Week 3:</strong> Write a 1-page formal definition of equivariance vs invariance with a concrete protein example (e.g., why binding energy must be SE(3)-invariant but atomic coordinates must be SE(3)-equivariant).</p>
+      </label>
+      <label class="artifact-body" data-id="p2-artifact-2">
+        <input type="checkbox" class="item-check">
+        <p><strong>Week 5:</strong> Write a 1-page comparison of three equivariant architectures (EGNN, SE(3)-Transformer, IPA) &mdash; what each assumes, what each sacrifices, when you'd choose each.</p>
+      </label>
+    </div>
+
+    <!-- Metrics Table -->
+    <div class="resource-group">
+      <h3 class="resource-group-title">
+        <span class="resource-icon">&#9634;</span>
+        Protein Structure Evaluation Metrics
+      </h3>
+      <p class="resource-group-subtitle">You can't design architectures without understanding how they're evaluated. Know these:</p>
+      <div class="metrics-table-wrapper">
+        <table class="metrics-table">
+          <thead>
+            <tr><th>Metric</th><th>What it measures</th><th>When to use</th></tr>
+          </thead>
+          <tbody>
+            <tr><td><strong>lDDT</strong></td><td>Local distance difference test &mdash; per-residue backbone accuracy</td><td>Single-structure quality (AF2's pLDDT is predicted lDDT)</td></tr>
+            <tr><td><strong>TM-score</strong></td><td>Global fold similarity (0-1, >0.5 = same fold)</td><td>Comparing predicted vs experimental structure</td></tr>
+            <tr><td><strong>RMSD</strong></td><td>Root-mean-square deviation of aligned atoms</td><td>Quick backbone comparison (sensitive to outliers)</td></tr>
+            <tr><td><strong>FAPE</strong></td><td>Frame-aligned point error &mdash; AlphaFold's training loss</td><td>SE(3)-invariant structure loss</td></tr>
+            <tr><td><strong>PAE</strong></td><td>Predicted aligned error &mdash; per-residue-pair confidence</td><td>Domain boundary detection, complex confidence</td></tr>
+            <tr><td><strong>ipTM</strong></td><td>Interface predicted TM-score</td><td>Complex/multimer confidence</td></tr>
+            <tr><td><strong>scTM/scRMSD</strong></td><td>Self-consistency: Design &rarr; ProteinMPNN &rarr; AF2 &rarr; compare</td><td>Evaluating generative protein models</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <!-- PHASE 3: DIFFUSION & FLOW MATCHING -->
+  <section id="phase-3" class="section">
+    <div class="section-header">
+      <span class="section-badge phase-badge">Phase 3 &middot; Weeks 6-8</span>
+      <h2>Diffusion & Flow Matching</h2>
+      <p class="section-why"><strong>Why:</strong> You use RFDiffusion/Boltz-2 as black boxes. Understanding score matching, SDEs, and flow matching lets you design novel generative approaches.</p>
+    </div>
+
+    <div class="callout callout-idea">
+      <strong>Start collecting paper ideas this week.</strong> You now have enough vocabulary (transformers + equivariance + generative models) to start sketching research directions in your notebook.
+    </div>
+
+    <!-- Diffusion Blogs -->
+    <div class="resource-group">
+      <h3 class="resource-group-title">
+        <span class="resource-icon blog-icon">B</span>
+        Blog Posts: Diffusion
+      </h3>
+      <div class="resource-list">
+        <label class="resource-item" data-id="p3-blog-1">
+          <input type="checkbox" class="item-check">
+          <div class="resource-content">
+            <a href="https://erdem.pl/2023/11/step-by-step-visual-introduction-to-diffusion-models/" target="_blank" rel="noopener">Step-by-step visual intro to Diffusion Models</a>
+            <span class="resource-meta">Kemal Erdem &middot; Interactive diagrams. Drag sliders to see noise schedules, forward/reverse.</span>
+          </div>
+        </label>
+        <label class="resource-item" data-id="p3-blog-2">
+          <input type="checkbox" class="item-check">
+          <div class="resource-content">
+            <a href="https://iclr-blogposts.github.io/2024/blog/diffusion-theory-from-scratch/" target="_blank" rel="noopener">Building Diffusion theory from ground up</a>
+            <span class="resource-meta">ICLR 2024 blog &middot; Animated Langevin dynamics and score learning. Best "aha moment" resource.</span>
+          </div>
+        </label>
+        <label class="resource-item" data-id="p3-blog-3">
+          <input type="checkbox" class="item-check">
+          <div class="resource-content">
+            <a href="https://yang-song.net/blog/2021/score/" target="_blank" rel="noopener">Yang Song: Score-based generative modeling</a>
+            <span class="resource-meta">Definitive blog by the inventor. Score &rarr; Langevin &rarr; SDE framework.</span>
+          </div>
+        </label>
+      </div>
+    </div>
+
+    <!-- Flow Matching Blogs -->
+    <div class="resource-group">
+      <h3 class="resource-group-title">
+        <span class="resource-icon blog-icon">B</span>
+        Blog Posts: Flow Matching
+      </h3>
+      <div class="resource-list">
+        <label class="resource-item" data-id="p3-blog-4">
+          <input type="checkbox" class="item-check">
+          <div class="resource-content">
+            <a href="https://dl.heeere.com/conditional-flow-matching/blog/conditional-flow-matching/" target="_blank" rel="noopener">A Visual Dive into Conditional Flow Matching</a>
+            <span class="resource-meta">ICLR 2025 blog &middot; Animated velocity fields, probability paths, <em>why</em> conditioning makes FM tractable.</span>
+          </div>
+        </label>
+        <label class="resource-item" data-id="p3-blog-5">
+          <input type="checkbox" class="item-check">
+          <div class="resource-content">
+            <a href="https://peterroelants.github.io/posts/flow_matching_intro/" target="_blank" rel="noopener">Flow Matching: A visual introduction</a>
+            <span class="resource-meta">Minimal 1D toy example with notebook. Most intuitive FM starting point.</span>
+          </div>
+        </label>
+        <label class="resource-item" data-id="p3-blog-6">
+          <input type="checkbox" class="item-check">
+          <div class="resource-content">
+            <a href="https://mlg.eng.cam.ac.uk/blog/2024/01/20/flow-matching.html" target="_blank" rel="noopener">Cambridge MLG: Intro to Flow Matching</a>
+            <span class="resource-meta">Clean math with visualizations of why CNFs were hard and how FM solves it.</span>
+          </div>
+        </label>
+        <label class="resource-item" data-id="p3-blog-7">
+          <input type="checkbox" class="item-check">
+          <div class="resource-content">
+            <a href="https://drscotthawley.github.io/blog/posts/FlowModels.html" target="_blank" rel="noopener">Scott Hawley: Flow Matching from Physics</a>
+            <span class="resource-meta">End-runs the math using physics intuition. Praised by Sander Dieleman. Includes Colab.</span>
+          </div>
+        </label>
+      </div>
+    </div>
+
+    <!-- Papers -->
+    <div class="resource-group">
+      <h3 class="resource-group-title">
+        <span class="resource-icon paper-icon">P</span>
+        Papers
+      </h3>
+      <div class="resource-list">
+        <label class="resource-item" data-id="p3-paper-1">
+          <input type="checkbox" class="item-check">
+          <div class="resource-content">
+            <strong>Ho et al., "DDPM" (NeurIPS 2020)</strong>
+            <span class="resource-meta">Focus on simplified objective (Eq 14)</span>
+          </div>
+        </label>
+        <label class="resource-item" data-id="p3-paper-2">
+          <input type="checkbox" class="item-check">
+          <div class="resource-content">
+            <strong>Song et al., "Score-Based Generative Modeling through SDEs" (ICLR 2021 Best Paper)</strong>
+            <span class="resource-meta">The unifying framework</span>
+          </div>
+        </label>
+        <label class="resource-item" data-id="p3-paper-3">
+          <input type="checkbox" class="item-check">
+          <div class="resource-content">
+            <strong>Lipman et al., "Flow Matching for Generative Modeling" (ICLR 2023)</strong>
+            <span class="resource-meta">OT paths > diffusion paths</span>
+          </div>
+        </label>
+        <label class="resource-item" data-id="p3-paper-4">
+          <input type="checkbox" class="item-check">
+          <div class="resource-content">
+            <strong>Lipman et al., "Flow Matching Guide and Code" (arXiv 2412.06264)</strong>
+            <span class="resource-meta">Official guide + PyTorch library</span>
+          </div>
+        </label>
+        <label class="resource-item" data-id="p3-paper-5">
+          <input type="checkbox" class="item-check">
+          <div class="resource-content">
+            <strong>Calvin Luo, "Understanding Diffusion Models: A Unified Perspective" (arXiv 2208.11970)</strong>
+            <span class="resource-meta">Best single math reference</span>
+          </div>
+        </label>
+      </div>
+    </div>
+
+    <!-- Coding -->
+    <div class="resource-group">
+      <h3 class="resource-group-title">
+        <span class="resource-icon code-icon">&lt;/&gt;</span>
+        Coding
+      </h3>
+      <div class="resource-list">
+        <label class="resource-item" data-id="p3-code-1">
+          <input type="checkbox" class="item-check">
+          <div class="resource-content">
+            <a href="https://huggingface.co/blog/annotated-diffusion" target="_blank" rel="noopener">HuggingFace Annotated Diffusion</a>
+            <span class="resource-meta">DDPM in PyTorch</span>
+          </div>
+        </label>
+        <label class="resource-item" data-id="p3-code-2">
+          <input type="checkbox" class="item-check">
+          <div class="resource-content">
+            <a href="https://github.com/atong01/conditional-flow-matching" target="_blank" rel="noopener">TorchCFM</a>
+            <span class="resource-meta">FM, CFM, OT-CFM with 2D examples</span>
+          </div>
+        </label>
+        <label class="resource-item" data-id="p3-code-3">
+          <input type="checkbox" class="item-check">
+          <div class="resource-content">
+            <a href="https://github.com/facebookresearch/flow_matching" target="_blank" rel="noopener">Meta flow_matching library</a>
+            <span class="resource-meta">Official FM implementation</span>
+          </div>
+        </label>
+      </div>
+    </div>
+
+    <!-- Protein Exercises -->
+    <div class="resource-group">
+      <h3 class="resource-group-title">
+        <span class="resource-icon exercise-icon">&#9883;</span>
+        Protein Exercises
+      </h3>
+      <div class="resource-list">
+        <label class="resource-item exercise" data-id="p3-ex-1">
+          <input type="checkbox" class="item-check">
+          <div class="resource-content">
+            <strong>Implement a toy SE(3) diffusion model for protein backbone generation</strong>
+            <span class="resource-meta">Follow <a href="https://arxiv.org/abs/2302.02277" target="_blank">FrameDiff</a> (Yim et al., ICML 2023): represent each residue as a rigid frame (R, t) in SE(3), define forward diffusion as IGSO(3) noise on rotations + Gaussian noise on translations, train a small denoiser on a subset of CATH structures. Use the <a href="https://github.com/gcorso/DiffDock" target="_blank">DiffDock codebase</a> as reference for diffusion on SO(3).</span>
+          </div>
+        </label>
+        <label class="resource-item exercise" data-id="p3-ex-2">
+          <input type="checkbox" class="item-check">
+          <div class="resource-content">
+            <strong>Run RFDiffusion end-to-end on a binder design task</strong>
+            <span class="resource-meta">Trace through the codebase to understand how the SE(3)-equivariant RoseTTAFold denoiser works. Specifically: where does self-conditioning happen? How is the noise schedule defined? Where are the SE(3) frames updated? Write a 1-page technical note.</span>
+          </div>
+        </label>
+      </div>
+    </div>
+
+    <!-- Evaluation Metrics -->
+    <div class="resource-group">
+      <h3 class="resource-group-title">
+        <span class="resource-icon">&#9634;</span>
+        Evaluating Generative Protein Models
+      </h3>
+      <div class="metrics-table-wrapper">
+        <table class="metrics-table">
+          <thead>
+            <tr><th>Metric</th><th>Definition</th><th>Good value</th></tr>
+          </thead>
+          <tbody>
+            <tr><td><strong>Designability</strong></td><td>Generate backbone &rarr; ProteinMPNN &rarr; AF2 &rarr; scTM to original</td><td>Higher = better</td></tr>
+            <tr><td><strong>Novelty</strong></td><td>Max TM-score to nearest PDB structure</td><td>Lower = more novel</td></tr>
+            <tr><td><strong>Diversity</strong></td><td>Pairwise TM-score within generated set</td><td>Lower = more diverse</td></tr>
+            <tr><td><strong>Foldability</strong></td><td>pLDDT of AF2 prediction on ProteinMPNN-designed sequence</td><td>Higher = more confident</td></tr>
+            <tr><td><strong>Seq. Recovery</strong></td><td>% amino acids matching native (inverse folding)</td><td>~50% is good for ProteinMPNN</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Artifact -->
+    <div class="artifact-card">
+      <div class="artifact-header">
+        <span class="artifact-icon">&#9998;</span>
+        <h3>Weekly Artifact</h3>
+      </div>
+      <label class="artifact-body" data-id="p3-artifact">
+        <input type="checkbox" class="item-check">
+        <p>Write a <strong>1-page derivation</strong> showing the three equivalent DDPM training objectives (predict x<sub>0</sub>, predict &epsilon;, predict score) and why they're equivalent via Tweedie's formula.</p>
+      </label>
+    </div>
+  </section>
+
+  <!-- PHASE 4: REPRESENTATION LEARNING -->
+  <section id="phase-4" class="section">
+    <div class="section-header">
+      <span class="section-badge phase-badge">Phase 4 &middot; Weeks 9-10</span>
+      <h2>Representation Learning</h2>
+      <p class="section-why"><strong>Why:</strong> Directly addresses your D-domain problem. ESM-2 was trained on natural protein sequences from UniRef. D-domain scaffolds are rare/absent in that training distribution. Understanding <em>when</em> representations transfer and <em>when</em> they fail gives you the theoretical framework for your first methods paper.</p>
+    </div>
+
+    <!-- Blog Posts -->
+    <div class="resource-group">
+      <h3 class="resource-group-title">
+        <span class="resource-icon blog-icon">B</span>
+        Blog Posts <span class="resource-hint">(start here)</span>
+      </h3>
+      <div class="resource-list">
+        <label class="resource-item" data-id="p4-blog-1">
+          <input type="checkbox" class="item-check">
+          <div class="resource-content">
+            <a href="https://lilianweng.github.io/posts/2021-05-31-contrastive/" target="_blank" rel="noopener">Lilian Weng: Contrastive Representation Learning</a>
+            <span class="resource-meta">Every loss function (InfoNCE, Triplet, NCE), SimCLR, BYOL, MoCo, CLIP. Mathematically rigorous.</span>
+          </div>
+        </label>
+        <label class="resource-item" data-id="p4-blog-2">
+          <input type="checkbox" class="item-check">
+          <div class="resource-content">
+            <a href="https://hazyresearch.stanford.edu/blog/2022-04-19-contrastive-1" target="_blank" rel="noopener">Hazy Research: Contrastive Learning 3-part series</a>
+            <span class="resource-meta">Categorizes theory into "geometric" (alignment/uniformity) and "augmentation overlap" perspectives.</span>
+          </div>
+        </label>
+      </div>
+    </div>
+
+    <!-- Papers -->
+    <div class="resource-group">
+      <h3 class="resource-group-title">
+        <span class="resource-icon paper-icon">P</span>
+        Papers
+      </h3>
+      <div class="resource-list">
+        <label class="resource-item" data-id="p4-paper-1">
+          <input type="checkbox" class="item-check">
+          <div class="resource-content">
+            <strong>van den Oord et al., "CPC" (2018)</strong>
+            <span class="resource-meta">InfoNCE as MI lower bound</span>
+          </div>
+        </label>
+        <label class="resource-item" data-id="p4-paper-2">
+          <input type="checkbox" class="item-check">
+          <div class="resource-content">
+            <strong>Chen et al., "SimCLR" (ICML 2020)</strong>
+            <span class="resource-meta">Most influential contrastive learning paper</span>
+          </div>
+        </label>
+        <label class="resource-item" data-id="p4-paper-3">
+          <input type="checkbox" class="item-check">
+          <div class="resource-content">
+            <strong>Arora et al., "Theoretical Analysis of Contrastive Learning" (ICML 2019)</strong>
+            <span class="resource-meta">First rigorous downstream guarantees</span>
+          </div>
+        </label>
+        <label class="resource-item" data-id="p4-paper-4">
+          <input type="checkbox" class="item-check">
+          <div class="resource-content">
+            <strong>Ben-David et al., "A Theory of Learning from Different Domains" (2010)</strong>
+            <span class="resource-meta">H-divergence and domain adaptation bounds. <strong>This is the formal framework for why ESM-2 fails on D-domain scaffolds.</strong></span>
+          </div>
+        </label>
+        <label class="resource-item" data-id="p4-paper-5">
+          <input type="checkbox" class="item-check">
+          <div class="resource-content">
+            <strong>Wang & Isola, "Alignment and Uniformity on the Hypersphere" (2020)</strong>
+            <span class="resource-meta">Diagnostic metrics for representation quality</span>
+          </div>
+        </label>
+      </div>
+    </div>
+
+    <!-- Structure Tokenization -->
+    <div class="resource-group">
+      <h3 class="resource-group-title">
+        <span class="resource-icon">&#10024;</span>
+        Structure Tokenization <span class="resource-hint">(emerging frontier)</span>
+      </h3>
+      <div class="resource-list">
+        <label class="resource-item" data-id="p4-token-1">
+          <input type="checkbox" class="item-check">
+          <div class="resource-content">
+            <strong>Su et al., "SaProt" (ICLR 2024)</strong>
+            <span class="resource-meta">Structure-aware vocabulary via Foldseek 3Di tokens + sequence tokens. Outperforms ESM-2 on 10 tasks.</span>
+          </div>
+        </label>
+        <label class="resource-item" data-id="p4-token-2">
+          <input type="checkbox" class="item-check">
+          <div class="resource-content">
+            <strong>Chen et al., "ProSST" (2024)</strong>
+            <span class="resource-meta">Protein structure sequence transformer with structure quantization</span>
+          </div>
+        </label>
+      </div>
+      <div class="callout callout-question">
+        <strong>Key question to sit with:</strong> Can structure be discretized like language? What information is lost? What is gained? If you can design a better tokenization for D-domain scaffolds, that's a methods paper.
+      </div>
+    </div>
+
+    <!-- Coding -->
+    <div class="resource-group">
+      <h3 class="resource-group-title">
+        <span class="resource-icon code-icon">&lt;/&gt;</span>
+        Coding
+      </h3>
+      <div class="resource-list">
+        <label class="resource-item" data-id="p4-code-1">
+          <input type="checkbox" class="item-check">
+          <div class="resource-content">
+            <a href="https://uvadlc-notebooks.readthedocs.io/en/latest/tutorial_notebooks/tutorial17/SimCLR.html" target="_blank" rel="noopener">UvA DL Notebooks: SimCLR tutorial</a>
+            <span class="resource-meta">Full PyTorch implementation</span>
+          </div>
+        </label>
+      </div>
+    </div>
+
+    <!-- Protein Exercises -->
+    <div class="resource-group">
+      <h3 class="resource-group-title">
+        <span class="resource-icon exercise-icon">&#9883;</span>
+        Protein Exercises
+      </h3>
+      <div class="resource-list">
+        <label class="resource-item exercise" data-id="p4-ex-1">
+          <input type="checkbox" class="item-check">
+          <div class="resource-content">
+            <strong>Benchmark zero-shot vs fine-tuned ESM-2 on your D-domain ELISA data</strong>
+            <span class="resource-meta">Compute the alignment and uniformity metrics (Wang & Isola) on ESM-2 embeddings of your D-domain sequences. Show that alignment is poor (functionally similar D-domain binders don't cluster together) and uniformity is fine (embeddings fill the hypersphere).</span>
+          </div>
+        </label>
+        <label class="resource-item exercise" data-id="p4-ex-2">
+          <input type="checkbox" class="item-check">
+          <div class="resource-content">
+            <strong>Implement contrastive fine-tuning (ProtTucker-style)</strong>
+            <span class="resource-meta">On ESM-2 embeddings using triplet loss with CATH fold labels. Measure improvement in remote homology detection before/after. Then try on D-domain sequences with ELISA binder/non-binder labels. Paper: <a href="https://academic.oup.com/nargab/article/4/2/lqac043/6576357" target="_blank">Heinzinger et al., NAR 2022</a>.</span>
+          </div>
+        </label>
+        <label class="resource-item exercise" data-id="p4-ex-3">
+          <input type="checkbox" class="item-check">
+          <div class="resource-content">
+            <strong>Probe what ESM-2 actually learns</strong>
+            <span class="resource-meta">Using the <a href="https://interplm.ai/" target="_blank">InterPLM</a> sparse autoencoder tool or replicate the analysis from <a href="https://arxiv.org/abs/2502.09794" target="_blank">Garcia et al. 2025</a>. Extract interpretable features from ESM-2's middle layers and check which ones activate on D-domain sequences vs natural proteins.</span>
+          </div>
+        </label>
+      </div>
+    </div>
+
+    <!-- Artifact -->
+    <div class="artifact-card">
+      <div class="artifact-header">
+        <span class="artifact-icon">&#9998;</span>
+        <h3>Weekly Artifact</h3>
+      </div>
+      <label class="artifact-body" data-id="p4-artifact">
+        <input type="checkbox" class="item-check">
+        <p>Write a <strong>1-page "domain adaptation analysis"</strong> for D-domains: state the Ben-David bound formally, identify which terms (source error, divergence, ideal joint error) dominate, and propose what intervention (fine-tuning, contrastive learning, structure-aware tokenization) addresses which term.</p>
+      </label>
+    </div>
+  </section>
+
+  <!-- PHASE 5: RL & BAYESIAN OPTIMIZATION -->
+  <section id="phase-5" class="section">
+    <div class="section-header">
+      <span class="section-badge phase-badge">Phase 5 &middot; Week 11</span>
+      <h2>RL & Bayesian Optimization</h2>
+      <p class="section-why"><strong>Why:</strong> Formalize the "generate &rarr; score &rarr; select &rarr; iterate" pipelines you already build.</p>
+    </div>
+
+    <!-- Blog Posts -->
+    <div class="resource-group">
+      <h3 class="resource-group-title">
+        <span class="resource-icon blog-icon">B</span>
+        Blog Posts <span class="resource-hint">(start here)</span>
+      </h3>
+      <div class="resource-list">
+        <label class="resource-item" data-id="p5-blog-1">
+          <input type="checkbox" class="item-check">
+          <div class="resource-content">
+            <a href="https://lilianweng.github.io/posts/2018-04-08-policy-gradient/" target="_blank" rel="noopener">Lilian Weng: Policy Gradient Algorithms</a>
+            <span class="resource-meta">REINFORCE &rarr; Actor-Critic &rarr; PPO with full derivations</span>
+          </div>
+        </label>
+        <label class="resource-item" data-id="p5-blog-2">
+          <input type="checkbox" class="item-check">
+          <div class="resource-content">
+            <a href="https://spinningup.openai.com/en/latest/spinningup/spinningup.html" target="_blank" rel="noopener">OpenAI Spinning Up</a>
+            <span class="resource-meta">Structured curriculum with implementations</span>
+          </div>
+        </label>
+      </div>
+    </div>
+
+    <!-- Papers -->
+    <div class="resource-group">
+      <h3 class="resource-group-title">
+        <span class="resource-icon paper-icon">P</span>
+        Papers
+      </h3>
+      <div class="resource-list">
+        <label class="resource-item" data-id="p5-paper-1">
+          <input type="checkbox" class="item-check">
+          <div class="resource-content">
+            <strong>Sutton & Barto, "RL: An Introduction" Ch 2 + Ch 13</strong>
+            <span class="resource-meta">Bandits/UCB + policy gradients &mdash; free at incompleteideas.net</span>
+          </div>
+        </label>
+        <label class="resource-item" data-id="p5-paper-2">
+          <input type="checkbox" class="item-check">
+          <div class="resource-content">
+            <strong>Frazier, "A Tutorial on Bayesian Optimization" (arXiv 1807.02811)</strong>
+            <span class="resource-meta">Best single BO tutorial</span>
+          </div>
+        </label>
+        <label class="resource-item" data-id="p5-paper-3">
+          <input type="checkbox" class="item-check">
+          <div class="resource-content">
+            <strong>Schulman et al., "PPO" (2017)</strong>
+            <span class="resource-meta">The clipped surrogate objective</span>
+          </div>
+        </label>
+        <label class="resource-item" data-id="p5-paper-4">
+          <input type="checkbox" class="item-check">
+          <div class="resource-content">
+            <strong>Angermueller et al., "DyNA-PPO" (ICLR 2020)</strong>
+            <span class="resource-meta">RL for biological sequence design</span>
+          </div>
+        </label>
+      </div>
+    </div>
+
+    <!-- Coding -->
+    <div class="resource-group">
+      <h3 class="resource-group-title">
+        <span class="resource-icon code-icon">&lt;/&gt;</span>
+        Coding
+      </h3>
+      <div class="resource-list">
+        <label class="resource-item" data-id="p5-code-1">
+          <input type="checkbox" class="item-check">
+          <div class="resource-content">
+            <strong>Spinning Up <code>1_simple_pg.py</code></strong>
+            <span class="resource-meta">REINFORCE in ~80 lines, then add baselines</span>
+          </div>
+        </label>
+        <label class="resource-item" data-id="p5-code-2">
+          <input type="checkbox" class="item-check">
+          <div class="resource-content">
+            <a href="https://botorch.org/docs/getting_started/" target="_blank" rel="noopener">BoTorch quick-start</a>
+            <span class="resource-meta">GP + Expected Improvement loop</span>
+          </div>
+        </label>
+      </div>
+    </div>
+
+    <!-- Protein Exercises -->
+    <div class="resource-group">
+      <h3 class="resource-group-title">
+        <span class="resource-icon exercise-icon">&#9883;</span>
+        Protein Exercises
+      </h3>
+      <div class="resource-list">
+        <label class="resource-item exercise" data-id="p5-ex-1">
+          <input type="checkbox" class="item-check">
+          <div class="resource-content">
+            <strong>Implement a Bayesian optimization loop for protein fitness optimization</strong>
+            <span class="resource-meta">Use BoTorch with a GP surrogate. Define the sequence space as ESM-2 embeddings, fit a GP, implement Expected Improvement and Thompson Sampling acquisition functions. Compare strategies: which finds high-fitness sequences in fewer rounds? Use <a href="https://proteingym.org/" target="_blank">ProteinGym</a> if needed.</span>
+          </div>
+        </label>
+        <label class="resource-item exercise" data-id="p5-ex-2">
+          <input type="checkbox" class="item-check">
+          <div class="resource-content">
+            <strong>Replicate the DyNA-PPO setup</strong>
+            <span class="resource-meta">On a toy protein fitness landscape (e.g., GB1 from Wu et al. 2016). Train a surrogate model, use it as reward in PPO, generate sequences, and evaluate. Compare PPO-generated sequences vs BO-selected sequences vs random.</span>
+          </div>
+        </label>
+      </div>
+    </div>
+
+    <!-- Artifact -->
+    <div class="artifact-card">
+      <div class="artifact-header">
+        <span class="artifact-icon">&#9998;</span>
+        <h3>Weekly Artifact</h3>
+      </div>
+      <label class="artifact-body" data-id="p5-artifact">
+        <input type="checkbox" class="item-check">
+        <p>Write a <strong>1-page MDP formulation</strong> of your RL pipeline: define state space, action space, transition dynamics, reward function, and discount factor. Then separately write the BO formulation: define surrogate model, acquisition function, and batch selection strategy. Compare the two framings &mdash; when would you prefer each?</p>
+      </label>
+    </div>
+  </section>
+
+  <!-- PHASE 6: WRITING METHODS PAPERS -->
+  <section id="phase-6" class="section">
+    <div class="section-header">
+      <span class="section-badge phase-badge">Phase 6 &middot; Week 12</span>
+      <h2>Writing Methods Papers</h2>
+      <p class="section-why"><strong>Why:</strong> The gap between application and methods paper is framing, not content.</p>
+    </div>
+
+    <!-- Reading -->
+    <div class="resource-group">
+      <h3 class="resource-group-title">
+        <span class="resource-icon blog-icon">B</span>
+        Reading
+      </h3>
+      <div class="resource-list">
+        <label class="resource-item" data-id="p6-read-1">
+          <input type="checkbox" class="item-check">
+          <div class="resource-content">
+            <a href="https://icml.cc/Conferences/2002/craft.html" target="_blank" rel="noopener">Langley, "Crafting Papers on ML" (ICML 2002)</a>
+            <span class="resource-meta">Methods vs. application</span>
+          </div>
+        </label>
+        <label class="resource-item" data-id="p6-read-2">
+          <input type="checkbox" class="item-check">
+          <div class="resource-content">
+            <strong>Lipton & Steinhardt, "Troubling Trends in ML Scholarship" (arXiv 1807.03341)</strong>
+            <span class="resource-meta">Four anti-patterns</span>
+          </div>
+        </label>
+      </div>
+    </div>
+
+    <!-- Templates -->
+    <div class="resource-group">
+      <h3 class="resource-group-title">
+        <span class="resource-icon paper-icon">P</span>
+        Study These as Templates
+      </h3>
+      <div class="resource-list">
+        <label class="resource-item" data-id="p6-template-1">
+          <input type="checkbox" class="item-check">
+          <div class="resource-content">
+            <strong>Bose et al., "FoldFlow" (ICLR 2024)</strong>
+            <span class="resource-meta">Flow matching on SE(3), three progressive variants. Best template for your first paper.</span>
+          </div>
+        </label>
+        <label class="resource-item" data-id="p6-template-2">
+          <input type="checkbox" class="item-check">
+          <div class="resource-content">
+            <strong>Su et al., "SaProt" (ICLR 2024)</strong>
+            <span class="resource-meta">Representation-level contribution, clean ablations</span>
+          </div>
+        </label>
+      </div>
+    </div>
+
+    <!-- Capstone -->
+    <div class="artifact-card capstone">
+      <div class="artifact-header">
+        <span class="artifact-icon">&#127942;</span>
+        <h3>Capstone</h3>
+      </div>
+      <label class="artifact-body" data-id="p6-capstone">
+        <input type="checkbox" class="item-check">
+        <div>
+          <p>Write a <strong>2-page outline</strong>:</p>
+          <ul>
+            <li><strong>Problem formulation:</strong> Ben-David &mdash; D-domain scaffolds as OOD for PLMs</li>
+            <li><strong>Architecture:</strong> Structure-aware representation for underrepresented folds</li>
+            <li><strong>Training objective:</strong> Contrastive + generative</li>
+            <li><strong>Ablation plan</strong></li>
+            <li><strong>Optimization protocol</strong></li>
+          </ul>
+          <p class="resource-meta" style="margin-top:0.5rem">By now your research notebook should contain 5-10 candidate research questions. Pick the one with the clearest path to a controlled experiment and flesh it out.</p>
+        </div>
+      </label>
+    </div>
+  </section>
+
+  <!-- QUICK REFERENCE -->
+  <section id="quick-ref" class="section">
+    <div class="section-header">
+      <span class="section-badge">Reference</span>
+      <h2>Quick Reference</h2>
+    </div>
+    <div class="metrics-table-wrapper">
+      <table class="metrics-table quick-ref-table">
+        <thead>
+          <tr><th>Weeks</th><th>Topic</th><th>Start with this blog</th><th>Weekly artifact</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>1-2</td>
+            <td>Transformers</td>
+            <td><a href="https://poloclub.github.io/transformer-explainer/" target="_blank">Transformer Explainer</a></td>
+            <td>1-page &radic;d<sub>k</sub> scaling derivation</td>
+          </tr>
+          <tr>
+            <td>3-5</td>
+            <td>Equivariance</td>
+            <td><a href="https://maurice-weiler.gitlab.io/blog_post/cnn-book_1_equivariant_networks/" target="_blank">Maurice Weiler's blog</a></td>
+            <td>Equivariance definition + architecture comparison</td>
+          </tr>
+          <tr>
+            <td>6-8</td>
+            <td>Diffusion & FM</td>
+            <td><a href="https://iclr-blogposts.github.io/2024/blog/diffusion-theory-from-scratch/" target="_blank">ICLR diffusion blog</a> + <a href="https://dl.heeere.com/conditional-flow-matching/blog/conditional-flow-matching/" target="_blank">Visual CFM</a></td>
+            <td>DDPM 3-objective equivalence derivation</td>
+          </tr>
+          <tr>
+            <td>9-10</td>
+            <td>Representations</td>
+            <td><a href="https://lilianweng.github.io/posts/2021-05-31-contrastive/" target="_blank">Lilian Weng contrastive</a></td>
+            <td>Ben-David domain adaptation analysis</td>
+          </tr>
+          <tr>
+            <td>11</td>
+            <td>RL & BO</td>
+            <td><a href="https://lilianweng.github.io/posts/2018-04-08-policy-gradient/" target="_blank">Lilian Weng policy gradient</a></td>
+            <td>MDP vs BO formulation</td>
+          </tr>
+          <tr>
+            <td>12</td>
+            <td>Paper writing</td>
+            <td><a href="https://icml.cc/Conferences/2002/craft.html" target="_blank">ICML craft guide</a></td>
+            <td>2-page methods paper outline</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="section-footer-note"><strong>Total: ~104 hours. End state:</strong> a methods paper outline + research notebook with 5-10 candidate questions.</p>
+  </section>
+
+  <!-- APPENDIX: MATH REFRESHERS -->
+  <section id="appendix" class="section">
+    <div class="section-header">
+      <span class="section-badge">Appendix</span>
+      <h2>Math Refreshers</h2>
+      <p class="section-why">Consult as needed &mdash; don't read front-to-back. Your ChemE PhD covers calculus and linear algebra. These fill specific gaps for ML theory.</p>
+    </div>
+
+    <!-- Linear Algebra -->
+    <div class="resource-group collapsible">
+      <h3 class="resource-group-title collapsible-toggle" onclick="toggleCollapsible(this)">
+        <span class="resource-icon">&#931;</span>
+        Linear Algebra & Matrix Calculus
+        <span class="collapse-arrow">&#9662;</span>
+      </h3>
+      <div class="resource-list collapsible-content">
+        <label class="resource-item" data-id="app-la-1">
+          <input type="checkbox" class="item-check">
+          <div class="resource-content">
+            <a href="https://mml-book.github.io/" target="_blank" rel="noopener">Deisenroth, Faisal & Ong, <em>Mathematics for Machine Learning</em></a>
+            <span class="resource-meta">Free PDF. Ch 2-4 for linear algebra, Ch 5 for vector calculus, Ch 6 for probability. <strong>Start here if any derivation feels shaky.</strong></span>
+          </div>
+        </label>
+        <label class="resource-item" data-id="app-la-2">
+          <input type="checkbox" class="item-check">
+          <div class="resource-content">
+            <a href="https://www.3blue1brown.com/topics/linear-algebra" target="_blank" rel="noopener">3Blue1Brown: Essence of Linear Algebra</a>
+            <span class="resource-meta">Visual refresher on eigenvalues, change of basis, SVD. Geometric intuition for attention as projection and equivariance as commuting diagrams.</span>
+          </div>
+        </label>
+        <label class="resource-item" data-id="app-la-3">
+          <input type="checkbox" class="item-check">
+          <div class="resource-content">
+            <a href="https://www.math.uwaterloo.ca/~hwolkowi/matrixcookbook.pdf" target="_blank" rel="noopener">Petersen & Pedersen, <em>The Matrix Cookbook</em></a>
+            <span class="resource-meta">Reference card for matrix derivatives. You'll need it for deriving gradients of attention and loss functions.</span>
+          </div>
+        </label>
+      </div>
+    </div>
+
+    <!-- Group Theory -->
+    <div class="resource-group collapsible">
+      <h3 class="resource-group-title collapsible-toggle" onclick="toggleCollapsible(this)">
+        <span class="resource-icon">&#931;</span>
+        Group Theory <span class="resource-hint">(Phase 2)</span>
+        <span class="collapse-arrow">&#9662;</span>
+      </h3>
+      <div class="resource-list collapsible-content">
+        <label class="resource-item" data-id="app-gt-1">
+          <input type="checkbox" class="item-check">
+          <div class="resource-content">
+            <strong>Bronstein et al., <em>Geometric Deep Learning</em> Ch 3</strong>
+            <span class="resource-meta">Sections 3.1-3.4: groups, group actions, representations, equivariant maps. Already in curriculum but this is the math you need.</span>
+          </div>
+        </label>
+        <label class="resource-item" data-id="app-gt-2">
+          <input type="checkbox" class="item-check">
+          <div class="resource-content">
+            <a href="https://nathancarter.github.io/group-explorer/index.html" target="_blank" rel="noopener">Visual Group Theory by Nathan Carter</a>
+            <span class="resource-meta">Interactive visual exploration of groups, Cayley diagrams, symmetry.</span>
+          </div>
+        </label>
+        <div class="key-concepts">
+          <strong>Key concepts:</strong> group, subgroup, group action, orbit, stabilizer, representation, irreducible representation, equivariant map, invariant map. You do <em>not</em> need full abstract algebra &mdash; just these concepts applied to SO(3), SE(3), and permutation groups.
+        </div>
+      </div>
+    </div>
+
+    <!-- Probability & Information Theory -->
+    <div class="resource-group collapsible">
+      <h3 class="resource-group-title collapsible-toggle" onclick="toggleCollapsible(this)">
+        <span class="resource-icon">&#931;</span>
+        Probability & Information Theory <span class="resource-hint">(Phases 3-4)</span>
+        <span class="collapse-arrow">&#9662;</span>
+      </h3>
+      <div class="resource-list collapsible-content">
+        <label class="resource-item" data-id="app-prob-1">
+          <input type="checkbox" class="item-check">
+          <div class="resource-content">
+            <strong>Cover & Thomas, <em>Elements of Information Theory</em> &mdash; Ch 1-4 only</strong>
+            <span class="resource-meta">Entropy, KL divergence, mutual information, data processing inequality. Required for InfoNCE derivation.</span>
+          </div>
+        </label>
+        <label class="resource-item" data-id="app-prob-2">
+          <input type="checkbox" class="item-check">
+          <div class="resource-content">
+            <a href="https://lilianweng.github.io/posts/2017-08-20-gan/" target="_blank" rel="noopener">Lilian Weng: From GAN to WGAN</a>
+            <span class="resource-meta">Clearest short explanation of KL vs JS divergence. Relevant for domain adaptation theory.</span>
+          </div>
+        </label>
+        <div class="key-concepts">
+          <strong>Key concepts:</strong> KL divergence, mutual information, ELBO, reparameterization trick, score function (&nabla;<sub>x</sub> log p(x)). If you can derive the ELBO from scratch, you have enough probability.
+        </div>
+      </div>
+    </div>
+
+    <!-- Stochastic Processes -->
+    <div class="resource-group collapsible">
+      <h3 class="resource-group-title collapsible-toggle" onclick="toggleCollapsible(this)">
+        <span class="resource-icon">&#931;</span>
+        Stochastic Processes & SDEs <span class="resource-hint">(Phase 3)</span>
+        <span class="collapse-arrow">&#9662;</span>
+      </h3>
+      <div class="resource-list collapsible-content">
+        <label class="resource-item" data-id="app-sde-1">
+          <input type="checkbox" class="item-check">
+          <div class="resource-content">
+            <a href="https://link.springer.com/book/10.1007/978-3-642-14394-6" target="_blank" rel="noopener">Oksendal, <em>Stochastic Differential Equations</em> &mdash; Ch 1-5</a>
+            <span class="resource-meta">Standard reference. Only needed if you want the rigorous measure-theoretic treatment.</span>
+          </div>
+        </label>
+        <div class="key-concepts">
+          <strong>Key concepts:</strong> Brownian motion, Ito SDE, Fokker-Planck equation, forward/reverse SDE relationship, probability flow ODE. The last three are the most important for diffusion models.
+        </div>
+      </div>
+    </div>
+
+    <!-- Optimization -->
+    <div class="resource-group collapsible">
+      <h3 class="resource-group-title collapsible-toggle" onclick="toggleCollapsible(this)">
+        <span class="resource-icon">&#931;</span>
+        Optimization <span class="resource-hint">(Phase 5)</span>
+        <span class="collapse-arrow">&#9662;</span>
+      </h3>
+      <div class="resource-list collapsible-content">
+        <label class="resource-item" data-id="app-opt-1">
+          <input type="checkbox" class="item-check">
+          <div class="resource-content">
+            <a href="https://web.stanford.edu/~boyd/cvxbook/" target="_blank" rel="noopener">Boyd & Vandenberghe, <em>Convex Optimization</em></a>
+            <span class="resource-meta">Free PDF. Ch 1-5 for fundamentals. Essential for loss function derivations and convergence properties.</span>
+          </div>
+        </label>
+        <label class="resource-item" data-id="app-opt-2">
+          <input type="checkbox" class="item-check">
+          <div class="resource-content">
+            <a href="https://gaussianprocess.org/gpml/" target="_blank" rel="noopener">Rasmussen & Williams, <em>Gaussian Processes for Machine Learning</em></a>
+            <span class="resource-meta">Free PDF. Ch 2 for GP regression. Required background for Bayesian optimization.</span>
+          </div>
+        </label>
+        <div class="key-concepts">
+          <strong>Key concepts:</strong> convexity, duality, KKT conditions (Ch 5), GP prior/posterior, kernel functions, acquisition functions (EI, UCB, Thompson sampling).
+        </div>
+      </div>
+    </div>
+
+    <!-- When to use which -->
+    <div class="resource-group">
+      <h3 class="resource-group-title">
+        <span class="resource-icon">&#9634;</span>
+        When to Use Which Refresher
+      </h3>
+      <div class="metrics-table-wrapper">
+        <table class="metrics-table">
+          <thead>
+            <tr><th>If you're stuck on...</th><th>Read this</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>Attention matrix derivations</td><td>MML Ch 2-4, Matrix Cookbook</td></tr>
+            <tr><td>Why softmax works</td><td>MML Ch 6 (probability)</td></tr>
+            <tr><td>Group equivariance definitions</td><td>Bronstein Ch 3, Visual Group Theory</td></tr>
+            <tr><td>Spherical harmonics, CG products</td><td>Bronstein Ch 3 + e3nn docs</td></tr>
+            <tr><td>ELBO derivation for diffusion</td><td>Cover & Thomas Ch 1-4, then Calvin Luo tutorial</td></tr>
+            <tr><td>Score function &nabla; log p(x)</td><td>Yang Song's blog (Phase 3)</td></tr>
+            <tr><td>SDE forward/reverse</td><td>Calvin Luo tutorial, then Oksendal Ch 5 if needed</td></tr>
+            <tr><td>KL divergence in domain adaptation</td><td>Cover & Thomas Ch 2, Lilian Weng GAN post</td></tr>
+            <tr><td>GP regression for BO</td><td>Rasmussen & Williams Ch 2</td></tr>
+            <tr><td>Loss function convexity proofs</td><td>Boyd & Vandenberghe Ch 3</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<script src="app.js"></script>
+</body>
+</html>
