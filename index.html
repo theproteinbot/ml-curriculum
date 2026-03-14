@@ -95,6 +95,12 @@
         <span class="nav-weeks">Wk 12</span>
       </a>
     </li>
+    <li class="nav-divider">Notebook</li>
+    <li class="nav-item">
+      <a href="#notebook" class="nav-link" data-section="notebook">
+        <span class="nav-icon">&#128221;</span> Research Notebook
+      </a>
+    </li>
     <li class="nav-divider">Reference</li>
     <li class="nav-item">
       <a href="#quick-ref" class="nav-link" data-section="quick-ref">
@@ -376,6 +382,19 @@
         <p>Write a <strong>1-page derivation</strong> of why &radic;d<sub>k</sub> scaling prevents softmax saturation. Include: what happens to attention entropy without it, and why this matters for long protein sequences in ESM-2.</p>
       </label>
     </div>
+
+    <!-- Phase Notes -->
+    <div class="notes-section">
+      <div class="notes-header" onclick="toggleNotes(this)">
+        <span class="notes-icon">&#128221;</span>
+        <h3>Phase 1 Notes</h3>
+        <span class="notes-toggle">&#9662;</span>
+      </div>
+      <div class="notes-body">
+        <textarea class="notes-textarea" data-note="phase-1" placeholder="Your notes, derivations, research questions for Phase 1..."></textarea>
+        <div class="notes-meta">Auto-saved locally</div>
+      </div>
+    </div>
   </section>
 
   <!-- PHASE 2: EQUIVARIANT NETWORKS -->
@@ -548,6 +567,19 @@
             <tr><td><strong>scTM/scRMSD</strong></td><td>Self-consistency: Design &rarr; ProteinMPNN &rarr; AF2 &rarr; compare</td><td>Evaluating generative protein models</td></tr>
           </tbody>
         </table>
+      </div>
+    </div>
+
+    <!-- Phase Notes -->
+    <div class="notes-section">
+      <div class="notes-header" onclick="toggleNotes(this)">
+        <span class="notes-icon">&#128221;</span>
+        <h3>Phase 2 Notes</h3>
+        <span class="notes-toggle">&#9662;</span>
+      </div>
+      <div class="notes-body">
+        <textarea class="notes-textarea" data-note="phase-2" placeholder="Your notes, derivations, research questions for Phase 2..."></textarea>
+        <div class="notes-meta">Auto-saved locally</div>
       </div>
     </div>
   </section>
@@ -766,6 +798,19 @@
         <p>Write a <strong>1-page derivation</strong> showing the three equivalent DDPM training objectives (predict x<sub>0</sub>, predict &epsilon;, predict score) and why they're equivalent via Tweedie's formula.</p>
       </label>
     </div>
+
+    <!-- Phase Notes -->
+    <div class="notes-section">
+      <div class="notes-header" onclick="toggleNotes(this)">
+        <span class="notes-icon">&#128221;</span>
+        <h3>Phase 3 Notes</h3>
+        <span class="notes-toggle">&#9662;</span>
+      </div>
+      <div class="notes-body">
+        <textarea class="notes-textarea" data-note="phase-3" placeholder="Your notes, derivations, research questions for Phase 3..."></textarea>
+        <div class="notes-meta">Auto-saved locally</div>
+      </div>
+    </div>
   </section>
 
   <!-- PHASE 4: REPRESENTATION LEARNING -->
@@ -931,6 +976,19 @@
         <p>Write a <strong>1-page "domain adaptation analysis"</strong> for D-domains: state the Ben-David bound formally, identify which terms (source error, divergence, ideal joint error) dominate, and propose what intervention (fine-tuning, contrastive learning, structure-aware tokenization) addresses which term.</p>
       </label>
     </div>
+
+    <!-- Phase Notes -->
+    <div class="notes-section">
+      <div class="notes-header" onclick="toggleNotes(this)">
+        <span class="notes-icon">&#128221;</span>
+        <h3>Phase 4 Notes</h3>
+        <span class="notes-toggle">&#9662;</span>
+      </div>
+      <div class="notes-body">
+        <textarea class="notes-textarea" data-note="phase-4" placeholder="Your notes, derivations, research questions for Phase 4..."></textarea>
+        <div class="notes-meta">Auto-saved locally</div>
+      </div>
+    </div>
   </section>
 
   <!-- PHASE 5: RL & BAYESIAN OPTIMIZATION -->
@@ -1062,6 +1120,19 @@
         <p>Write a <strong>1-page MDP formulation</strong> of your RL pipeline: define state space, action space, transition dynamics, reward function, and discount factor. Then separately write the BO formulation: define surrogate model, acquisition function, and batch selection strategy. Compare the two framings &mdash; when would you prefer each?</p>
       </label>
     </div>
+
+    <!-- Phase Notes -->
+    <div class="notes-section">
+      <div class="notes-header" onclick="toggleNotes(this)">
+        <span class="notes-icon">&#128221;</span>
+        <h3>Phase 5 Notes</h3>
+        <span class="notes-toggle">&#9662;</span>
+      </div>
+      <div class="notes-body">
+        <textarea class="notes-textarea" data-note="phase-5" placeholder="Your notes, derivations, research questions for Phase 5..."></textarea>
+        <div class="notes-meta">Auto-saved locally</div>
+      </div>
+    </div>
   </section>
 
   <!-- PHASE 6: WRITING METHODS PAPERS -->
@@ -1141,6 +1212,52 @@
         </div>
       </label>
     </div>
+
+    <!-- Phase Notes -->
+    <div class="notes-section">
+      <div class="notes-header" onclick="toggleNotes(this)">
+        <span class="notes-icon">&#128221;</span>
+        <h3>Phase 6 Notes</h3>
+        <span class="notes-toggle">&#9662;</span>
+      </div>
+      <div class="notes-body">
+        <textarea class="notes-textarea" data-note="phase-6" placeholder="Your notes, derivations, research questions for Phase 6..."></textarea>
+        <div class="notes-meta">Auto-saved locally</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- RESEARCH NOTEBOOK -->
+  <section id="notebook" class="section">
+    <div class="section-header">
+      <span class="section-badge">Notebook</span>
+      <h2>Research Notebook</h2>
+      <p class="section-why">Your running document for derivations, diagrams, insights, and research questions. After 12 weeks this becomes the seed for a methods paper.</p>
+    </div>
+
+    <div class="notebook-main">
+      <textarea class="notes-textarea notebook-textarea" data-note="research-notebook" placeholder="Start your research notebook here...
+
+Suggested structure:
+- Derivations you worked through
+- Diagrams and visual intuitions
+- Key insights and aha moments
+- Research questions (capture immediately!)
+- Paper ideas (start week 6)
+- Connections between phases"></textarea>
+      <div class="notes-meta">Auto-saved locally</div>
+    </div>
+
+    <div class="notebook-actions">
+      <button class="action-btn export-btn" id="exportBtn">
+        <span>&#8615;</span> Export All Notes
+      </button>
+      <label class="action-btn import-btn">
+        <span>&#8613;</span> Import Notes
+        <input type="file" id="importFile" accept=".json" hidden>
+      </label>
+    </div>
+    <p class="sync-hint">Export your notes as JSON, then import on another device to sync.</p>
   </section>
 
   <!-- QUICK REFERENCE -->

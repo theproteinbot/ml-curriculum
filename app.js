@@ -1,5 +1,6 @@
 // ===== STATE =====
 const STORAGE_KEY = 'ml-curriculum-progress';
+const NOTES_KEY = 'ml-curriculum-notes';
 
 function loadProgress() {
   try {
@@ -141,9 +142,11 @@ function initReset() {
   if (!btn) return;
 
   btn.addEventListener('click', () => {
-    if (confirm('Reset all progress? This cannot be undone.')) {
+    if (confirm('Reset all progress and notes? This cannot be undone.')) {
       localStorage.removeItem(STORAGE_KEY);
+      localStorage.removeItem(NOTES_KEY);
       document.querySelectorAll('.item-check').forEach(cb => cb.checked = false);
+      document.querySelectorAll('.notes-textarea').forEach(ta => ta.value = '');
       updateProgress();
     }
   });
@@ -159,6 +162,145 @@ function initKeyboard() {
   });
 }
 
+// ===== NOTES =====
+function loadNotes() {
+  try {
+    return JSON.parse(localStorage.getItem(NOTES_KEY)) || {};
+  } catch {
+    return {};
+  }
+}
+
+function saveNotes(data) {
+  localStorage.setItem(NOTES_KEY, JSON.stringify(data));
+}
+
+function initNotes() {
+  const notes = loadNotes();
+  const textareas = document.querySelectorAll('.notes-textarea');
+
+  textareas.forEach(ta => {
+    const key = ta.dataset.note;
+    if (!key) return;
+
+    // Restore saved content
+    if (notes[key]) ta.value = notes[key];
+
+    // Auto-open notes sections that have content
+    if (notes[key] && ta.closest('.notes-section')) {
+      ta.closest('.notes-section').classList.add('open');
+    }
+
+    // Debounced auto-save
+    let saveTimeout;
+    ta.addEventListener('input', () => {
+      clearTimeout(saveTimeout);
+      saveTimeout = setTimeout(() => {
+        const n = loadNotes();
+        if (ta.value.trim()) {
+          n[key] = ta.value;
+        } else {
+          delete n[key];
+        }
+        saveNotes(n);
+        // Update meta text
+        const meta = ta.parentElement.querySelector('.notes-meta');
+        if (meta) {
+          meta.textContent = 'Saved';
+          setTimeout(() => { meta.textContent = 'Auto-saved locally'; }, 1500);
+        }
+      }, 500);
+    });
+  });
+}
+
+function toggleNotes(el) {
+  const section = el.closest('.notes-section');
+  if (section) {
+    section.classList.toggle('open');
+    // Focus textarea when opening
+    if (section.classList.contains('open')) {
+      const ta = section.querySelector('.notes-textarea');
+      if (ta) setTimeout(() => ta.focus(), 300);
+    }
+  }
+}
+window.toggleNotes = toggleNotes;
+
+// ===== EXPORT / IMPORT =====
+function initExportImport() {
+  const exportBtn = document.getElementById('exportBtn');
+  const importFile = document.getElementById('importFile');
+
+  if (exportBtn) {
+    exportBtn.addEventListener('click', () => {
+      const data = {
+        version: 1,
+        exportedAt: new Date().toISOString(),
+        progress: loadProgress(),
+        notes: loadNotes()
+      };
+      const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `ml-curriculum-backup-${new Date().toISOString().slice(0,10)}.json`;
+      a.click();
+      URL.revokeObjectURL(url);
+    });
+  }
+
+  if (importFile) {
+    importFile.addEventListener('change', (e) => {
+      const file = e.target.files[0];
+      if (!file) return;
+
+      const reader = new FileReader();
+      reader.onload = (ev) => {
+        try {
+          const data = JSON.parse(ev.target.result);
+
+          if (data.progress) {
+            // Merge progress (imported wins on conflict)
+            const current = loadProgress();
+            const merged = { ...current, ...data.progress };
+            saveProgress(merged);
+          }
+
+          if (data.notes) {
+            // Merge notes: keep longer version on conflict
+            const current = loadNotes();
+            const merged = { ...current };
+            for (const [key, val] of Object.entries(data.notes)) {
+              if (!merged[key] || val.length > merged[key].length) {
+                merged[key] = val;
+              }
+            }
+            saveNotes(merged);
+          }
+
+          // Reload UI
+          document.querySelectorAll('.item-check').forEach(cb => {
+            const item = cb.closest('[data-id]');
+            if (!item) return;
+            cb.checked = !!loadProgress()[item.dataset.id];
+          });
+          document.querySelectorAll('.notes-textarea').forEach(ta => {
+            const key = ta.dataset.note;
+            if (key) ta.value = loadNotes()[key] || '';
+          });
+          updateProgress();
+          alert('Notes and progress imported successfully!');
+        } catch (err) {
+          alert('Invalid file format. Please use a JSON file exported from this app.');
+        }
+        importFile.value = '';
+      };
+      reader.readAsText(file);
+    });
+  }
+}
+
 // ===== INIT =====
 document.addEventListener('DOMContentLoaded', () => {
   initCheckboxes();
@@ -167,6 +309,8 @@ document.addEventListener('DOMContentLoaded', () => {
   initMobileMenu();
   initReset();
   initKeyboard();
+  initNotes();
+  initExportImport();
 
   // Open collapsible sections that have checked items
   document.querySelectorAll('.collapsible').forEach(group => {
